@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ร้านน้องดาว - น้ำปั่น ยำ ขนมปังปิ้ง</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  
+  <!-- Google Font - Prompt -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- SweetAlert2 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding-bottom: 100px;
+      margin: 0;
+    }
+
+    /* ========== แถบข้อความวิ่ง ========== */
+    .marquee-container {
+      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 8px 0;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .marquee-content {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .marquee-container.closed {
+      background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    /* ========== Header ========== */
+    .header {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 1.2rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.8rem 0;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+    }
+
+    .search-box input {
+      padding-left: 40px;
+      border-radius: 25px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-btn {
+      position: relative;
+      background: white;
+      color: #10b981;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .cart-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    /* ========== ETA Banner ========== */
+    .eta-banner {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: white;
+      padding: 1rem;
+      margin: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    /* ========== Categories ========== */
+    .categories-section {
+      background: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .category-pill {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      margin: 0 0.3rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+      border: 2px solid transparent;
+    }
+
+    .category-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .category-pill.active {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    /* ========== Menu Cards ========== */
+    .menu-grid {
+      padding: 1rem;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+
+    .menu-icon {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+    }
+
+    .badge-today {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ef4444;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    }
+
+    .menu-body {
+      padding: 1rem;
+    }
+
+    .menu-name {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+    }
+
+    .menu-price {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* ========== Options Modal ========== */
+    .option-item {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .option-item:hover {
+      background: #f9fafb;
+      border-color: #10b981;
+    }
+
+    .option-item.selected {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .option-check {
+      color: #10b981;
+      font-size: 1.2rem;
+    }
+
+    /* ========== Cart ========== */
+    .cart-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .qty-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* ========== Checkout ========== */
+    .checkout-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .payment-option {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .payment-option:hover {
+      border-color: #10b981;
+      background: #f9fafb;
+    }
+
+    .payment-option.selected {
+      border-color: #10b981;
+      background: #d1fae5;
+    }
+
+    .payment-icon {
+      font-size: 2rem;
+    }
+
+    /* ========== Summary ========== */
+    .summary-box {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-total {
+      border-top: 2px solid #10b981;
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* ========== Buttons ========== */
+    .btn-primary-custom {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    /* ========== Loading ========== */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+    }
+
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #10b981;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 576px) {
+      .header h1 {
+        font-size: 1.3rem;
+      }
+      .menu-icon {
+        height: 120px;
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- แถบข้อความวิ่ง -->
+  <div class="marquee-container" id="marqueeBar">
+    <div class="marquee-content" id="marqueeText">
+      <i class="fas fa-calendar-day"></i> <span id="currentDate"></span> | 
+      <span id="statusMessage"></span>
+    </div>
+  </div>
+
+  <!-- App Container -->
+  <div id="app">
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p class="mt-3 text-muted">กำลังโหลดข้อมูล...</p>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- SweetAlert2 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+
+  <script>
+    // ========================================
+    // Configuration
+    // ========================================
+    const CONFIG = {
+      GAS_URL: 'YOUR_WEB_APP_URL', // แก้ไขตรงนี้
+      USE_MOCK_DATA: true // เปลี่ยนเป็น false เมื่อพร้อม deploy
+    };
+
+    // ========================================
+    // Mock Data
+    // ========================================
+    const MOCK_DATA = {
+      categories: [
+        { CategoryID: 'C1', CategoryName: 'น้ำปั่น', Sort: 1, Active: true, color: '#10b981', icon: '🥤' },
+        { CategoryID: 'C2', CategoryName: 'ยำ', Sort: 2, Active: true, color: '#ef4444', icon: '🥗' },
+        { CategoryID: 'C3', CategoryName: 'ขนมปังปิ้ง', Sort: 3, Active: true, color: '#f59e0b', icon: '🍞' }
+      ],
+      menus: [
+        { MenuID: 'M1', CategoryID: 'C1', MenuName: 'น้ำปั่นสตรอเบอร์รี่', BasePrice: 45, Available: true, TodayFlag: true, PrepTime: 5 },
+        { MenuID: 'M2', CategoryID: 'C1', MenuName: 'น้ำปั่นมะม่วง', BasePrice: 50, Available: true, TodayFlag: true, PrepTime: 5 },
+        { MenuID: 'M3', CategoryID: 'C1', MenuName: 'น้ำปั่นกล้วย', BasePrice: 40, Available: true, TodayFlag: false, PrepTime: 5 },
+        { MenuID: 'M4', CategoryID: 'C2', MenuName: 'ยำวุ้นเส้น', BasePrice: 60, Available: true, TodayFlag: true, PrepTime: 10 },
+        { MenuID: 'M5', CategoryID: 'C2', MenuName: 'ยำไข่ดาว', BasePrice: 55, Available: true, TodayFlag: true, PrepTime: 10 },
+        { MenuID: 'M6', CategoryID: 'C2', MenuName: 'ยำถั่วพู', BasePrice: 50, Available: true, TodayFlag: false, PrepTime: 10 },
+        { MenuID: 'M7', CategoryID: 'C3', MenuName: 'ขนมปังนมสด', BasePrice: 35, Available: true, TodayFlag: true, PrepTime: 7 },
+        { MenuID: 'M8', CategoryID: 'C3', MenuName: 'ขนมปังช็อกโกแลต', BasePrice: 40, Available: true, TodayFlag: true, PrepTime: 7 }
+      ],
+      optionGroups: [
+        {
+          GroupID: 'G1',
+          GroupName: 'ความหวาน',
+          Required: true,
+          MultiSelect: false,
+          Options: [
+            { OptionID: 'O1', Label: 'หวานน้อย', Price: 0 },
+            { OptionID: 'O2', Label: 'หวานปานกลาง', Price: 0 },
+            { OptionID: 'O3', Label: 'หวานมาก', Price: 0 }
+          ]
+        },
+        {
+          GroupID: 'G2',
+          GroupName: 'ท็อปปิ้งเพิ่ม',
+          Required: false,
+          MultiSelect: true,
+          Options: [
+            { OptionID: 'O4', Label: 'วิปครีม', Price: 10 },
+            { OptionID: 'O5', Label: 'ไข่มุก', Price: 15 },
+            { OptionID: 'O6', Label: 'วุ้นกาแฟ', Price: 10 }
+          ]
+        }
+      ],
+      systemConfig: {
+        SHOP_OPEN: true,
+        MAX_QUEUE: 20,
+        SHOP_NAME: 'ร้านน้องดาว',
+        DELIVERY_FEE: 50,
+        FREE_DELIVERY_MIN: 500
+      }
+    };
+
+    // ========================================
+    // Global State
+    // ========================================
+    const state = {
+      categories: [],
+      menus: [],
+      optionGroups: [],
+      systemConfig: {},
+      cart: [],
+      selectedCategory: 'ALL',
+      searchTerm: '',
+      currentQueue: 0,
+      shopOpen: true
+    };
+
+    // ========================================
+    // Utility Functions
+    // ========================================
+    function getThaiDate() {
+      const days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+      const months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                      'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+      const now = new Date();
+      const day = days[now.getDay()];
+      const date = now.getDate();
+      const month = months[now.getMonth()];
+      return `วัน${day}ที่ ${date} ${month}`;
+    }
+
+    function updateMarquee() {
+      const dateEl = document.getElementById('currentDate');
+      const statusEl = document.getElementById('statusMessage');
+      const marqueeBar = document.getElementById('marqueeBar');
+
+      dateEl.textContent = getThaiDate();
+
+      if (state.shopOpen) {
+        statusEl.innerHTML = '<i class="fas fa-store"></i> ร้านน้องดาวยินดีต้อนรับ ขณะนี้ร้านเปิดให้บริการค่ะ สั่งได้เลย 😋';
+        marqueeBar.classList.remove('closed');
+      } else {
+        statusEl.innerHTML = '<i class="fas fa-store-slash"></i> ขออภัย ขณะนี้ปิดร้าน กรุณากลับมาใหม่ในวันพรุ่งนี้ค่ะ 🙏';
+        marqueeBar.classList.add('closed');
+      }
+    }
+
+    // ========================================
+    // Data Loading
+    // ========================================
+    async function loadData() {
+      try {
+        if (CONFIG.USE_MOCK_DATA) {
+          state.categories = MOCK_DATA.categories;
+          state.menus = MOCK_DATA.menus;
+          state.optionGroups = MOCK_DATA.optionGroups;
+          state.systemConfig = MOCK_DATA.systemConfig;
+          state.shopOpen = MOCK_DATA.systemConfig.SHOP_OPEN;
+        } else {
+          const response = await fetch(`${CONFIG.GAS_URL}?action=getMenu`);
+          const data = await response.json();
+          // Process data...
+        }
+        
+        updateMarquee();
+        render();
+      } catch (error) {
+        console.error('Load Data Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'
+        });
+      }
+    }
+
+    // ========================================
+    // Render Functions
+    // ========================================
+    function render() {
+      const filteredMenus = state.menus.filter(menu => {
+        const matchCategory = state.selectedCategory === 'ALL' || menu.CategoryID === state.selectedCategory;
+        const matchSearch = menu.MenuName.toLowerCase().includes(state.searchTerm.toLowerCase());
+        return matchCategory && matchSearch && menu.Available;
+      });
+
+      const categoryColors = {
+        'C1': '#10b981',
+        'C2': '#ef4444',
+        'C3': '#f59e0b'
+      };
+
+      const categoryIcons = {
+        'C1': '🥤',
+        'C2': '🥗',
+        'C3': '🍞'
+      };
+
+      const html = `
+        <!-- Header -->
+        <div class="header">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h1><i class="fas fa-utensils"></i> ${state.systemConfig.SHOP_NAME || 'ร้านน้องดาว'}</h1>
+            <div class="cart-btn" onclick="openCart()">
+              <i class="fas fa-shopping-cart fa-lg"></i>
+              ${state.cart.length > 0 ? `<span class="cart-badge">${state.cart.length}</span>` : ''}
+            </div>
+          </div>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="ค้นหาเมนู..."
+              id="searchInput"
+              value="${state.searchTerm}"
+            >
+          </div>
+        </div>
+
+        <!-- ETA Banner -->
+        ${state.currentQueue > 0 ? `
+          <div class="eta-banner">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-clock fa-2x me-3"></i>
+              <div>
+                <div class="fw-bold fs-5">คิวของคุณ: #${state.currentQueue}</div>
+                <small>เวลารอโดยประมาณ: ${state.currentQueue * 5} นาที</small>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Categories -->
+        <div class="categories-section">
+          <span 
+            class="category-pill ${state.selectedCategory === 'ALL' ? 'active' : ''}"
+            style="background: ${state.selectedCategory === 'ALL' ? '#1f2937' : '#e5e7eb'}; 
+                   color: ${state.selectedCategory === 'ALL' ? 'white' : '#000'};"
+            onclick="selectCategory('ALL')"
+          >
+            <i class="fas fa-th-large"></i> ทั้งหมด
+          </span>
+          ${state.categories.map(cat => `
+            <span 
+              class="category-pill ${state.selectedCategory === cat.CategoryID ? 'active' : ''}"
+              style="background: ${state.selectedCategory === cat.CategoryID ? cat.color : '#e5e7eb'}; 
+                     color: ${state.selectedCategory === cat.CategoryID ? 'white' : '#000'};"
+              onclick="selectCategory('${cat.CategoryID}')"
+            >
+              ${cat.icon} ${cat.CategoryName}
+            </span>
+          `).join('')}
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid">
+          <div class="row g-3">
+            ${filteredMenus.length === 0 ? `
+              <div class="col-12 text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <p class="text-muted">ไม่พบเมนูที่ค้นหา</p>
+              </div>
+            ` : filteredMenus.map(menu => {
+              const cat = state.categories.find(c => c.CategoryID === menu.CategoryID);
+              return `
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="menu-card" onclick='openMenuOptions(${JSON.stringify(menu)})'>
+                    ${menu.TodayFlag ? '<span class="badge-today"><i class="fas fa-star"></i> วันนี้</span>' : ''}
+                    <div class="menu-icon" style="background: ${cat?.color}; color: white;">
+                      ${cat?.icon || '🍽️'}
+                    </div>
+                    <div class="menu-body">
+                      <div class="menu-name">${menu.MenuName}</div>
+                      <div class="menu-price">${menu.BasePrice} ฿</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('app').innerHTML = html;
+
+      // Add search event listener
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          state.searchTerm = e.target.value;
+          render();
+        });
+      }
+    }
+
+    // ========================================
+    // Category Selection
+    // ========================================
+    function selectCategory(categoryId) {
+      state.selectedCategory = categoryId;
+      render();
+    }
+
+    // ========================================
+    // Menu Options Modal
+    // ========================================
+    let selectedOptions = {};
+
+    function openMenuOptions(menu) {
+      if (!state.shopOpen) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ร้านปิดแล้วค่ะ',
+          text: 'ขออภัย ขณะนี้ร้านปิดให้บริการ กรุณากลับมาใหม่ค่ะ'
+        });
+        return;
+      }
+
+      selectedOptions = {};
+
+      const optionGroupsHtml = state.optionGroups.map((group, gIdx) => `
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">
+            <i class="fas fa-cog"></i> ${group.GroupName}
+            ${group.Required ? '<span class="text-danger">*</span>' : ''}
+            ${group.MultiSelect ? '<small class="text-muted ms-2">(เลือกได้หลายอย่าง)</small>' : ''}
+          </h6>
+          ${group.Options.map((opt, oIdx) => `
+            <div 
+              class="option-item" 
+              id="opt-${gIdx}-${oIdx}"
+              onclick="selectOption(${gIdx}, ${oIdx}, ${group.MultiSelect})"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-check-circle option-check" id="check-${gIdx}-${oIdx}" style="display: none;"></i> ${opt.Label}</span>
+                ${opt.Price > 0 ? `<span class="text-success fw-bold">+${opt.Price} ฿</span>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+
+      Swal.fire({
+        title: `<i class="fas fa-shopping-bag"></i> ${menu.MenuName}`,
+        html: `
+          <div class="text-start">
+            <p class="text-success fw-bold fs-5 mb-4">${menu.BasePrice} ฿</p>
+            ${optionGroupsHtml}
+          </div>
+        `,
+        width: '90%',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-cart-plus"></i> เพิ่มลงตะกร้า',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#10b981',
+        didOpen: () => {
+          window.currentMenu = menu;
+        },
+        preConfirm: () => {
+          return addToCart();
+        }
+      });
+    }
+
+    function selectOption(groupIdx, optIdx, multiSelect) {
+      if (!selectedOptions[groupIdx]) {
+        selectedOptions[groupIdx] = [];
+      }
+
+      const group = state.optionGroups[groupIdx];
+      const optElement = document.getElementById(`opt-${groupIdx}-${optIdx}`);
+      const checkElement = document.getElementById(`check-${groupIdx}-${optIdx
